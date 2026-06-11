@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Re-Habita Maringá — Solicitar Doação</title>
+  <link rel="stylesheet" href="css/comunidade.css"/>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Maringá-PR · 2026</div>
+      <h1>Você não precisa<br>passar por isso <em>sozinho</em>.</h1>
+      <p>O Re-Habita conecta famílias em situação de vulnerabilidade às igrejas e instituições de Maringá que já têm doações prontas para entregar. Preencha o formulário e nossa equipe entrará em contato.</p>
+    </div>
+    <div class="btn-inicio-wrap">
+      <a href="index.html" class="btn-inicio">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Início
+      </a>
+    </div>
+  </header>
+
+  <svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#faf7f2"/>
+  </svg>
+
+  <main class="form-outer">
+
+    <!-- PROGRESSO -->
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-bar">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+      <div class="progress-label" id="progress-label">Etapa 1 de 3</div>
+    </div>
+
+    <!-- STEP 1 — DADOS PESSOAIS -->
+    <div class="step active" id="step-1">
+      <div class="step-header">
+        <div class="step-num">Etapa 1 de 3</div>
+        <h2>Seus dados</h2>
+        <p>Precisamos dessas informações para que o líder da sua região possa entrar em contato e agendar uma visita.</p>
+      </div>
+
+      <div class="form-card">
+
+        <!-- Nome -->
+        <div class="f-row" data-campo="nome">
+          <label>Nome completo *</label>
+          <input id="c-nome" type="text" placeholder="Seu nome completo" oninput="limparErro('nome')"/>
+          <div class="f-err" id="err-nome"></div>
+        </div>
+
+        <!-- CEP + Pessoas -->
+        <div class="f-row-2">
+          <div class="f-row" data-campo="cep">
+            <label>CEP *</label>
+            <input id="c-cep" type="text" placeholder="00000-000" maxlength="9"
+              oninput="mascaraCepCom(this); limparErro('cep')"
+              onblur="buscarCepCom()"/>
+            <div class="f-err" id="err-cep"></div>
+          </div>
+          <div class="f-row" data-campo="pessoas">
+            <label>Pessoas na casa *</label>
+            <input id="c-pessoas" type="number" min="1" max="30" placeholder="Ex: 4" oninput="limparErro('pessoas')"/>
+            <div class="f-err" id="err-pessoas"></div>
+          </div>
+        </div>
+
+        <!-- Rua -->
+        <div class="f-row" data-campo="rua">
+          <label>Rua *</label>
+          <input id="c-rua" type="text" placeholder="Preenchida automaticamente pelo CEP" oninput="limparErro('rua')"/>
+          <div class="f-err" id="err-rua"></div>
+        </div>
+
+        <!-- Número + Complemento -->
+        <div class="f-row-2">
+          <div class="f-row" data-campo="numero">
+            <label>Número *</label>
+            <input id="c-numero" type="text" placeholder="Ex: 142" oninput="limparErro('numero')"/>
+            <div class="f-err" id="err-numero"></div>
+          </div>
+          <div class="f-row">
+            <label>Complemento <span style="font-weight:400;color:var(--g400)">(opcional)</span></label>
+            <input id="c-complemento" type="text" placeholder="Apto, bloco, casa..."/>
+          </div>
+        </div>
+
+        <!-- Bairro -->
+        <div class="f-row" data-campo="bairro">
+          <label>Bairro *</label>
+          <div class="ac-c">
+            <input id="c-bairro" placeholder="Preenchido automaticamente ou digite..."
+              oninput="acCom('c-bairro','ac-bairro'); limparErro('bairro')"
+              onfocus="acCom('c-bairro','ac-bairro')" autocomplete="off"/>
+            <div class="ac-c-dd" id="ac-bairro"></div>
+          </div>
+          <div class="f-err" id="err-bairro"></div>
+        </div>
+
+        <!-- Telefone -->
+        <div class="f-row" data-campo="tel">
+          <label>Telefone para contato *</label>
+          <input id="c-tel" type="tel" placeholder="(44) 9 9999-9999" oninput="limparErro('tel')"/>
+          <div class="f-err" id="err-tel"></div>
+        </div>
+
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-next" onclick="irStep(2)">Próximo &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — ITENS -->
+    <div class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-num">Etapa 2 de 3</div>
+        <h2>O que sua família precisa?</h2>
+        <p>Selecione os itens abaixo. Você também pode adicionar outros itens específicos.</p>
+      </div>
+
+      <div class="form-card">
+        <div class="itens-grid" id="itens-grid"></div>
+        <div class="itens-erro" id="itens-erro">Selecione ao menos um item.</div>
+        <div class="item-add-row">
+          <input id="item-custom-inp" placeholder="Outro item específico..."/>
+          <button type="button" onclick="addItemCustom()">+ Adicionar</button>
+        </div>
+        <div class="custom-pills" id="custom-pills"></div>
+      </div>
+
+      <div class="f-row" style="margin-top:0">
+        <div class="form-card" style="padding:1.4rem 1.8rem">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--g600);margin-bottom:6px">Observações (opcional)</label>
+          <textarea id="c-obs" style="width:100%;padding:10px 12px;border:1.5px solid var(--g200);border-radius:10px;font-family:var(--font);font-size:.9rem;outline:none;resize:vertical;height:80px;box-sizing:border-box" placeholder="Ex: temos um bebê de 3 meses, idoso acamado, situação de emergência..."></textarea>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-prev" onclick="irStep(1)">&larr; Anterior</button>
+        <button class="btn-next" onclick="irStep(3)">Próximo &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — CONFIRMAÇÃO -->
+    <div class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-num">Etapa 3 de 3</div>
+        <h2>Confirmar envio</h2>
+        <p>Revise suas informações antes de enviar. Após o envio, um líder da sua região entrará em contato para agendar uma visita e confirmar a necessidade.</p>
+      </div>
+
+      <div class="form-card" id="resumo-card" style="background:var(--gl);border:1.5px solid #b8dfc8">
+        <p style="font-size:.85rem;color:var(--g600);line-height:1.8" id="resumo-texto"></p>
+      </div>
+
+      <div class="form-card" style="background:var(--ol);border:1.5px solid #f5ccaa;margin-top:0">
+        <p style="font-size:.82rem;color:var(--g600);line-height:1.7">
+          <strong style="color:var(--g800)">Privacidade:</strong> suas informações pessoais ficam protegidas e acessíveis apenas para os líderes autorizados da instituição parceira. Nunca serão divulgadas publicamente.
+        </p>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-prev" onclick="irStep(2)">&larr; Voltar</button>
+        <button class="btn-enviar" onclick="enviar()">Enviar solicitação</button>
+      </div>
+    </div>
+
+    <!-- SUCESSO -->
+    <div class="success-wrap" id="success-wrap">
+      <div class="success-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>Solicitação enviada!</h2>
+      <p>Recebemos seu pedido. Em breve, um líder da sua região entrará em contato pelo número informado para agendar uma visita e confirmar as doações.</p>
+      <button class="btn-nova" onclick="novaSolicitacao()">Enviar nova solicitação</button>
+    </div>
+
+  </main>
+
+  <footer class="comm-footer">
+    Re-Habita Maringá &nbsp;|&nbsp; ODS 11 — Cidades e Comunidades Sustentáveis &nbsp;|&nbsp;
+    <a href="index.html">Área do líder</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/comunidade.js"></script>
+  <script>
+
+    // ── CEP comunidade ────────────────────────────────────────
+    function mascaraCepCom(input) {
+      var v = input.value.replace(/\D/g, '').substring(0, 8);
+      if (v.length > 5) v = v.substring(0, 5) + '-' + v.substring(5);
+      input.value = v;
+    }
+
+    async function buscarCepCom() {
+      var cep = (document.getElementById('c-cep').value || '').replace(/\D/g, '');
+      if (cep.length !== 8) return;
+      try {
+        var res  = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+        var json = await res.json();
+        if (json.erro) { mostrarErroCom('cep', 'CEP não encontrado.'); return; }
+        if (json.logradouro) document.getElementById('c-rua').value    = json.logradouro;
+        if (json.bairro)     document.getElementById('c-bairro').value = json.bairro;
+        document.getElementById('c-numero').focus();
+      } catch(e) {
+        mostrarErroCom('cep', 'Erro ao buscar CEP. Preencha manualmente.');
+      }
+    }
+
+    function mostrarErroCom(campo, msg) {
+      var el = document.getElementById('err-' + campo);
+      if (el) el.textContent = msg;
+    }
+
+    // ── Validação Step 1 com novos campos ────────────────────
+    // Sobrescreve irStep para validar os novos campos
+    var _origIrStep = irStep;
+    window.irStep = function(dest) {
+      if (dest === 2) {
+        // valida step 1
+        var ok = true;
+        var campos = [
+          { id: 'c-nome',    err: 'nome',    msg: 'Informe seu nome completo.' },
+          { id: 'c-cep',     err: 'cep',     msg: 'Informe o CEP.' },
+          { id: 'c-rua',     err: 'rua',     msg: 'Informe a rua.' },
+          { id: 'c-numero',  err: 'numero',  msg: 'Informe o número.' },
+          { id: 'c-bairro',  err: 'bairro',  msg: 'Informe o bairro.' },
+          { id: 'c-pessoas', err: 'pessoas', msg: 'Informe quantas pessoas moram na casa.' },
+          { id: 'c-tel',     err: 'tel',     msg: 'Informe o telefone para contato.' },
+        ];
+        campos.forEach(function(c) {
+          var el = document.getElementById(c.id);
+          var errEl = document.getElementById('err-' + c.err);
+          if (!el || !el.value.trim()) {
+            if (errEl) errEl.textContent = c.msg;
+            ok = false;
+          }
+        });
+        if (!ok) return;
+      }
+
+      _origIrStep(dest);
+
+      if (dest === 3) {
+        var nome        = document.getElementById('c-nome').value;
+        var cep         = document.getElementById('c-cep').value;
+        var rua         = document.getElementById('c-rua').value;
+        var numero      = document.getElementById('c-numero').value;
+        var complemento = document.getElementById('c-complemento').value;
+        var bairro      = document.getElementById('c-bairro').value;
+        var pessoas     = document.getElementById('c-pessoas').value;
+        var tel         = document.getElementById('c-tel').value;
+        var endereco    = rua + ', ' + numero + (complemento ? ', ' + complemento : '') + ' — ' + bairro;
+        var itens       = Array.from(document.querySelectorAll('.c-item:checked')).map(function(c){ return c.value; });
+        var extras      = Array.from(customItens);
+        var todos       = itens.concat(extras);
+
+        document.getElementById('resumo-texto').innerHTML =
+          '<strong>Nome:</strong> ' + nome + '<br>' +
+          '<strong>CEP:</strong> ' + cep + '<br>' +
+          '<strong>Endereço:</strong> ' + endereco + '<br>' +
+          '<strong>Moradores:</strong> ' + pessoas + '<br>' +
+          '<strong>Telefone:</strong> ' + tel + '<br>' +
+          '<strong>Itens solicitados:</strong> ' + (todos.join(', ') || '—');
+      }
+    };
+
+  </script>
+</body>
+</html>

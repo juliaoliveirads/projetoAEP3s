@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Re-Habita Maringá — Painel</title>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/painel.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+
+<!-- ══ TELA DE LOGIN ══════════════════════════════════════════ -->
+<div id="login-screen" class="login-page">
+  <div class="login-wrap">
+    <div class="login-eyebrow">Maringá-PR · 2026</div>
+    <div class="login-card">
+      <div class="login-logo">Re-Habita</div>
+      <div class="login-tagline">Gestão Inteligente de Doações</div>
+
+      <label for="login-user">Usuário</label>
+      <input id="login-user" type="text" placeholder="lider@rehabita.org" autocomplete="username"/>
+
+      <label for="login-pass">Senha</label>
+      <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+
+      <div id="login-err" class="login-err"></div>
+      <div id="login-block" class="login-block"></div>
+
+      <button class="login-btn" onclick="tentarLogin()">Acessar o painel</button>
+
+      <div class="login-divider">ou</div>
+      <div class="login-link">
+        Precisa de ajuda? <a href="comunidade.html">Solicitar doação</a>
+      </div>
+
+      <div class="login-hint">
+        Acesso de demonstração:<br>
+        Usuário: <strong>lider</strong> &nbsp;|&nbsp; Senha: <strong>1234</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAINEL ═════════════════════════════════════════════════ -->
+<div id="painel-screen" style="display:none;flex-direction:column;min-height:100vh">
+
+  <div class="topbar">
+    <div class="topbar-logo">Re-Habita</div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbar-user">Igreja Central Maringá</span>
+      <button class="topbar-logout" onclick="fazerLogout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <div class="nav-tab active"  onclick="showTab('tab-dashboard')">Dashboard</div>
+    <div class="nav-tab"         onclick="showTab('tab-familias')">
+      Famílias <span class="tab-badge" id="badge-familias">0</span>
+    </div>
+    <div class="nav-tab"         onclick="showTab('tab-cadastrar')">+ Cadastrar Família</div>
+    <div class="nav-tab"         onclick="showTab('tab-pendentes')">
+      Pendentes <span class="tab-badge" id="badge-pendentes">0</span>
+    </div>
+    <div class="nav-tab"         onclick="showTab('tab-alertas')">
+      Alertas <span class="tab-badge red" id="badge-alertas">0</span>
+    </div>
+    <div class="nav-tab"         onclick="showTab('tab-mapa')">Mapa</div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard">
+      <div class="metrics-grid" id="metrics-grid"></div>
+      <div class="section-title">Fila de prioridade — top 5</div>
+      <div class="table-wrap" id="priority-table"></div>
+    </div>
+
+    <!-- FAMÍLIAS -->
+    <div id="tab-familias" style="display:none">
+      <div class="filters">
+        <input class="filter-input" id="f-busca" placeholder="Buscar por nome ou bairro..." oninput="renderFamilias()"/>
+        <select class="filter-select" id="f-status" onchange="renderFamilias()">
+          <option value="">Todos os status</option>
+          <option>Ativo</option><option>Em acompanhamento</option><option>Novo</option><option>Inativo</option>
+        </select>
+        <select class="filter-select" id="f-bairro-f" onchange="renderFamilias()">
+          <option value="">Todos os bairros</option>
+        </select>
+      </div>
+      <div class="table-wrap" id="familias-table"></div>
+    </div>
+
+    <!-- CADASTRAR -->
+    <div id="tab-cadastrar" style="display:none">
+      <div class="section-title">Cadastrar nova família — visita presencial do líder</div>
+
+      <div class="cad-card">
+        <div class="
+        cad-section-title">Dados pessoais do responsável</div>
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Nome completo *</label><input id="cad-nome" placeholder="Nome do responsável"/></div>
+          <div class="form-row g0"><label>CPF (opcional)</label><input id="cad-cpf" placeholder="000.000.000-00"/></div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Data de nascimento</label><input id="cad-nasc" type="date"/></div>
+          <div class="form-row g0"><label>Telefone *</label><input id="cad-tel" placeholder="(44) 9 9999-9999"/></div>
+        </div>
+      </div>
+      
+      <div class="cad-card">
+        <div class="cad-section-title">Residência</div>
+
+        <div class="form-row-2">
+          <div class="form-row g0">
+            <label>CEP *</label>
+            <input id="cad-cep" placeholder="00000-000" maxlength="9"
+              oninput="mascaraCep(this)" onblur="buscarCep()"/>
+          </div>
+          <div class="form-row g0">
+            <label>Moradores *</label>
+            <input id="cad-pessoas" type="number" min="1" max="30" placeholder="Total na casa"/>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="form-row">
+          <label>Rua *</label>
+          <input id="cad-rua" placeholder="Preenchido automaticamente pelo CEP"/>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-row g0">
+            <label>Número *</label>
+            <input id="cad-numero" placeholder="Ex: 142"/>
+          </div>
+          <div class="form-row g0">
+            <label>Complemento <span style="font-weight:400;color:var(--gray-400)">(opcional)</span></label>
+            <input id="cad-complemento" placeholder="Apto, bloco, casa..."/>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="form-row">
+          <label>Bairro *</label>
+          <div class="ac-wrap">
+            <input id="cad-bairro" placeholder="Preenchido automaticamente ou digite..."
+              oninput="acPainel('cad-bairro','ac-cad')" onfocus="acPainel('cad-bairro','ac-cad')" autocomplete="off"/>
+            <div class="ac-dropdown" id="ac-cad"></div>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Tipo de moradia</label>
+            <select id="cad-moradia"><option value="">Selecione</option><option>Própria</option><option>Alugada</option><option>Cedida</option><option>Invasão/Ocupação</option><option>Abrigo/Instituição</option></select>
+          </div>
+          <div class="form-row g0"><label>Renda familiar</label>
+            <select id="cad-renda"><option value="">Selecione</option><option>Sem renda</option><option>Até 1/2 salário mínimo</option><option>1/2 a 1 salário mínimo</option><option>1 a 2 salários mínimos</option><option>Acima de 2 salários</option></select>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Escolaridade do responsável</label>
+            <select id="cad-escolar"><option value="">Selecione</option><option>Sem escolaridade</option><option>Fundamental incompleto</option><option>Fundamental completo</option><option>Médio incompleto</option><option>Médio completo</option><option>Superior</option></select>
+          </div>
+          <div class="form-row g0"><label>Situação de emprego</label>
+            <select id="cad-emprego"><option value="">Selecione</option><option>Empregado formal</option><option>Empregado informal</option><option>Desempregado</option><option>Aposentado/Pensionista</option><option>Autônomo</option><option>Benefício social</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="cad-card">
+        <div class="cad-section-title">Membros da família</div>
+        <div id="membros-lista"></div>
+        <button class="add-membro-btn" type="button" onclick="addMembro()">+ Adicionar membro</button>
+      </div>
+
+      <div class="cad-card">
+        <div class="cad-section-title">Necessidades e atendimento</div>
+        <div class="form-row">
+          <label>Itens necessários *</label>
+          <div class="itens-wrap">
+            <div class="itens-checks">
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Cesta básica"/> Cesta básica</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Leite"/> Leite</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Fralda"/> Fralda</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Alimentos gerais"/> Alimentos gerais</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Higiene pessoal"/> Higiene pessoal</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Roupas"/> Roupas</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Remédios"/> Remédios</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Fraldas geriátricas"/> Fraldas geriátricas</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Material escolar"/> Material escolar</label>
+              <label class="check-item"><input type="checkbox" class="cad-item" value="Gás de cozinha"/> Gás de cozinha</label>
+            </div>
+            <div class="item-custom">
+              <input id="cad-item-custom" placeholder="Outro item específico..."/>
+              <button type="button" onclick="addCustomTagCad()">+ Adicionar</button>
+            </div>
+            <div class="custom-tags" id="cad-custom-tags"></div>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Urgência</label>
+            <select id="cad-urgencia"><option value="">Selecione</option><option>Baixa — acompanhamento periódico</option><option>Média — necessidade regular</option><option>Alta — situação crítica</option><option>Emergência — necessidade imediata</option></select>
+          </div>
+          <div class="form-row g0"><label>Frequência recomendada</label>
+            <select id="cad-freq"><option value="">Selecione</option><option>Semanal</option><option>Quinzenal</option><option>Mensal</option><option>Bimestral</option><option>Conforme necessidade</option></select>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="form-row"><label>Observações da visita</label>
+          <textarea id="cad-obs" placeholder="Condição da casa, saúde dos membros, situação emocional, outras observações..."></textarea>
+        </div>
+        <div class="form-row-2">
+          <div class="form-row g0"><label>Data da visita</label><input id="cad-data-visita" type="date"/></div>
+          <div class="form-row g0"><label>Próxima revisita</label><input id="cad-revisita" type="date"/></div>
+        </div>
+      </div>
+
+      <div class="cad-actions">
+        <button class="btn-cadastrar" onclick="cadastrarFamilia()">Cadastrar Família</button>
+        <button class="btn-cancelar"  onclick="showTab('tab-familias')">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- PENDENTES -->
+    <div id="tab-pendentes" style="display:none">
+      <div class="section-title">Solicitações da comunidade — aguardando visita</div>
+      <div id="pendentes-list"></div>
+    </div>
+
+    <!-- ALERTAS -->
+    <div id="tab-alertas" style="display:none">
+      <div class="section-title">Famílias que precisam de atenção</div>
+      <div id="alertas-list"></div>
+    </div>
+
+    <!-- MAPA -->
+    <div id="tab-mapa" style="display:none">
+      <div class="section-title">Mapa de atendimentos — Maringá-PR</div>
+      <div class="map-container"><div id="leaflet-map"></div></div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Recebeu recentemente</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div>Atenção (+15 dias)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>Urgente (+30 dias)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Pendente</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL FICHA -->
+<div class="modal-overlay" id="ficha-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-nome-familia">Ficha da Família</div>
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+    </div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/data.js"></script>
+<script src="js/painel.js"></script>
+</body>
+</html>
