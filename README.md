@@ -52,8 +52,8 @@ REHABITA/
 
 | Recurso | Link |
 |---|---|
-| 📋 Planilha (Google Sheets) | [Abrir planilha](https://docs.google.com/spreadsheets/d/1wrkvTqh4ZPH98dR4fY0IPXN58nhPGFDMGbzkoQL0gMw/edit#gid=1700429178) |
-| ⚡ API (Google Apps Script) | [Abrir projeto](https://script.google.com/u/0/home/projects/1yifnpb7PW6xnfCKep86fJRqwnCHCuER-RtmZPOLJ6hUAgvSNE3sIPW5L/edit) |
+| Planilha (Google Sheets) | [Abrir planilha](https://docs.google.com/spreadsheets/d/1wrkvTqh4ZPH98dR4fY0IPXN58nhPGFDMGbzkoQL0gMw/edit#gid=1700429178) |
+| API (Google Apps Script) | [Abrir projeto](https://script.google.com/u/0/home/projects/1yifnpb7PW6xnfCKep86fJRqwnCHCuER-RtmZPOLJ6hUAgvSNE3sIPW5L/edit) |
 
 > ⚠️ **Atenção:** para que os dados carreguem, a URL da API no `data.js` precisa apontar para o Apps Script publicado como Web App. Sem isso, o front-end não consegue ler nem gravar na planilha.
 
@@ -79,7 +79,7 @@ Google Sheets (base de dados)
 
 ---
 
-## 📋 Estrutura da planilha
+## Estrutura da planilha
 
 A planilha possui as seguintes colunas principais por assistido:
 
