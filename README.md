@@ -6,7 +6,7 @@
 
 ## 📌 O que é
 
-O **REHABITA** é uma aplicação web leve, sem servidor e sem banco de dados próprio, desenvolvida para gerenciar o cadastro, acompanhamento e histórico de distribuição de itens para famílias em situação de vulnerabilidade social em Maringá/PR.
+O **REHABITA** é uma aplicação web leve, sem servidor, desenvolvida para gerenciar o cadastro, acompanhamento e histórico de distribuição de itens para famílias em situação de vulnerabilidade social em Maringá/PR.
 
 Toda a persistência de dados é feita via **Google Sheets**, e a comunicação entre o front-end e a planilha é feita por uma **API publicada no Google Apps Script**.
 
