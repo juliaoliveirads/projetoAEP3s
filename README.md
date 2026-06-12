@@ -1,10 +1,10 @@
-# 🟣 REHABITA
+# REHABITA
 
 > Sistema de cadastro e acompanhamento de famílias assistidas — front-end estático integrado ao Google Sheets via Apps Script.
 
 ---
 
-## 📌 O que é
+## O que é
 
 O **REHABITA** é uma aplicação web leve, sem servidor, desenvolvida para gerenciar o cadastro, acompanhamento e histórico de distribuição de itens para famílias em situação de vulnerabilidade social em Maringá/PR.
 
@@ -18,21 +18,21 @@ Toda a persistência de dados é feita via **Google Sheets**, e a comunicação 
 REHABITA/
 │
 ├── .vscode/
-│   ├── launch.json         # Configuração de debug local
-│   └── settings.json       # Preferências do editor
+│   ├── launch.json        
+│   └── settings.json       
 │
 ├── css/
-│   ├── global.css          # Reset, variáveis e estilos base
-│   ├── painel.css          # Estilos do painel administrativo
-│   └── comunidade.css      # Estilos da view pública / comunidade
-│
-├── js/
-│   ├── data.js             # Camada de dados — fetch para o Apps Script
-│   ├── painel.js           # Lógica do painel: listagem, filtros, ações
-│   └── comunidade.js       # Lógica da view de comunidade
-│
-├── index.html              # Painel administrativo (entrada principal)
-└── comunidade.html         # View pública / mapa de atendimentos
+│   ├── global.css         
+│   └── comunidade.css     
+│   ├── painel.css         
+│                          
+├── js/                    
+│   ├── data.js            
+│   ├── painel.js          
+│   └── comunidade.js      
+│                          
+├── index.html             
+└── comunidade.html        
 ```
 
 ---
@@ -41,11 +41,10 @@ REHABITA/
 
 | Camada | Tecnologia |
 |---|---|
-| Front-end | HTML5 + CSS3 + JavaScript puro (Vanilla JS) |
+| Front-end | HTML + CSS + JavaScript |
 | Back-end / API | Google Apps Script (Web App publicada) |
 | Banco de dados | Google Sheets |
 | Editor | Visual Studio Code |
-| Deploy | Estático (sem servidor) — abre direto no browser |
 
 ---
 
@@ -56,28 +55,11 @@ REHABITA/
 | 📋 Planilha (Google Sheets) | [Abrir planilha](https://docs.google.com/spreadsheets/d/1wrkvTqh4ZPH98dR4fY0IPXN58nhPGFDMGbzkoQL0gMw/edit#gid=1700429178) |
 | ⚡ API (Google Apps Script) | [Abrir projeto](https://script.google.com/u/0/home/projects/1yifnpb7PW6xnfCKep86fJRqwnCHCuER-RtmZPOLJ6hUAgvSNE3sIPW5L/edit) |
 
----
-
-## 🚀 Como rodar localmente
-
-Não há build, não há dependências e não há instalação. Basta:
-
-```bash
-# Clone ou baixe o repositório
-git clone https://github.com/seu-usuario/rehabita.git
-
-# Abra no VS Code
-code rehabita/
-
-# Abra o index.html direto no browser
-# ou use a extensão Live Server do VS Code
-```
-
 > ⚠️ **Atenção:** para que os dados carreguem, a URL da API no `data.js` precisa apontar para o Apps Script publicado como Web App. Sem isso, o front-end não consegue ler nem gravar na planilha.
 
 ---
 
-## 🧩 Como funciona a integração
+## Como funciona a integração
 
 ```
 Browser (HTML/JS)
@@ -127,7 +109,7 @@ A planilha possui as seguintes colunas principais por assistido:
 
 ---
 
-## 👥 Perfis de uso
+## Perfis de uso
 
 | Perfil | Acesso | O que faz |
 |---|---|---|
@@ -136,21 +118,14 @@ A planilha possui as seguintes colunas principais por assistido:
 
 ---
 
-## 📁 Arquivos de dados de teste
+## Arquivos de dados de teste
 
 O arquivo `cadastro_assistidos.xlsx` contém dados fictícios gerados para testes, com CPFs falsos (matematicamente válidos), endereços reais de Maringá/PR e datas inventadas. **Não representa pessoas reais.**
 
 ---
 
-## 🛡️ Observações importantes
+## Observações importantes
 
 - Os dados reais ficam **exclusivamente na planilha Google Sheets**, controlada pelos administradores do projeto.
 - O acesso à planilha e ao Apps Script deve ser restrito apenas à equipe autorizada.
 - CPFs e dados pessoais de assistidos reais são **sigilosos** — nunca subir dados reais no repositório.
-
----
-
-## ✍️ Desenvolvido por
-
-Projeto interno — Maringá/PR  
-Qualquer dúvida sobre a estrutura técnica, falar com o analista responsável.
